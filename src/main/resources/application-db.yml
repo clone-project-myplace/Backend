@@ -1,0 +1,55 @@
+spring:
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.batch_size: 100
+        default_fetch_size: 100
+        order_inserts: true
+        order_updates: true
+      jakarta:
+        persistence:
+          sharedCache.mode: ALL
+---
+spring:
+  config:
+    activate:
+      on-profile: "db-local"
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    show-sql: true
+    database: H2
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  datasource:
+    url: jdbc:h2:mem:db
+    username: sa
+    password:
+---
+spring:
+  config:
+    activate:
+      on-profile: "db-dev"
+  jpa:
+    show-sql: true
+    database: MYSQL
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
