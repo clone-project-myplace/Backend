@@ -36,7 +36,7 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
 
         return (web) -> web.ignoring()
-//                .requestMatchers(PathRequest.toH2Console())
+                .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/api/users/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/test/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/test/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/myreviews/**").permitAll()
                 .anyRequest().authenticated()
