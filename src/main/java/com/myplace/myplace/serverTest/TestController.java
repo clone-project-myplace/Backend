@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-    private TestService testService;
+    private final TestService testService;
 
     @GetMapping("/test")
     public TestResponseDto test() {
