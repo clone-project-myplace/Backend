@@ -1,4 +1,4 @@
-package com.myplace.myplace.review.entiy;
+package com.myplace.myplace.review.entity;
 
 
 import com.myplace.myplace.member.entity.Member;
