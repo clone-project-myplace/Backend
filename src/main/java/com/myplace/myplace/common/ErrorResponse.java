@@ -4,8 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class
-ErrorResponse {
+public class ErrorResponse {
     private int status;
     private String msg;
 
