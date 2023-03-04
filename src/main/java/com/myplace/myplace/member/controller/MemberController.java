@@ -1,6 +1,7 @@
 package com.myplace.myplace.member.controller;
 
 import com.myplace.myplace.common.SuccessResponseDto;
+import com.myplace.myplace.member.dto.LoginRequestDto;
 import com.myplace.myplace.member.dto.SignupRequestDto;
 import com.myplace.myplace.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -21,5 +23,10 @@ public class MemberController {
     @PostMapping("/signup")
     public SuccessResponseDto<Void> signup(@Valid @RequestBody SignupRequestDto requestDto) {
         return memberService.signup(requestDto);
+    }
+
+    @PostMapping("/login")
+    public SuccessResponseDto<Void> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+        return memberService.login(requestDto, response);
     }
 }

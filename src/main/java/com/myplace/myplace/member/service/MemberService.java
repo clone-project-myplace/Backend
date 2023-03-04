@@ -5,6 +5,7 @@ import com.myplace.myplace.common.MessageType;
 import com.myplace.myplace.common.ResponseUtils;
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.jwt.JwtUtil;
+import com.myplace.myplace.member.dto.LoginRequestDto;
 import com.myplace.myplace.member.dto.SignupRequestDto;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.member.repository.MemberRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -43,5 +45,27 @@ public class MemberService {
         memberRepository.save(member);
 
         return ResponseUtils.ok(MessageType.SIGNUP_SUCCESSFULLY);
+    }
+
+    public SuccessResponseDto<Void> login(LoginRequestDto requestDto, HttpServletResponse response) {
+
+        String memberId = requestDto.getMemberId();
+        String memberPw = requestDto.getMemberPw();
+
+        // 사용자 확인
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_MATCHING_INFO.getMessage())
+        );
+
+        // 비밀번호 중복 확인
+        if (!passwordEncoder.matches(memberPw, member.getMemberPw())) {
+            throw new IllegalArgumentException(ErrorType.NOT_MATCHING_INFO.getMessage());
+        }
+
+        // Authorization 에 token 설정
+        String token = jwtUtil.createToken(member.getMemberName());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+
+        return ResponseUtils.ok(MessageType.LOGIN_SUCCESSFULLY);
     }
 }
