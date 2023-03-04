@@ -3,14 +3,17 @@ package com.myplace.myplace.review.entity;
 
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.restaurant.entity.Restaurant;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends Timestamp {
 
     @Id
