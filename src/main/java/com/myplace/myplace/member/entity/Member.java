@@ -1,5 +1,6 @@
 package com.myplace.myplace.member.entity;
 
+import com.myplace.myplace.member.dto.SignupRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String memberId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private String memberPw;
 
     @Column(nullable = false, length = 30)
@@ -42,6 +43,15 @@ public class Member {
                 .memberPw(memberPw)
                 .memberName(memberName)
                 .imgUrl(imgUrl)
+                .build();
+    }
+
+    public static Member of(SignupRequestDto requestDto, String encodePw) {
+        return Member.builder()
+                .memberId(requestDto.getMemberId())
+                .memberPw(encodePw)
+                .memberName(requestDto.getMemberName())
+                .imgUrl("default.image")
                 .build();
     }
 }
