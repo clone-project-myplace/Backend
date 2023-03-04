@@ -3,6 +3,7 @@ package com.myplace.myplace.like.entity;
 
 import com.myplace.myplace.member.entity.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,16 @@ public class Like {
     @JoinColumn(name = "reviewId", nullable = false)
     private Review review;
 
+    @Builder
+    public Like(Member member, Review review){
+        this.member = member;
+        this.review = review;
+    }
+
+    public static Like of(Member member, Review review){
+        return Like.builder()
+                .member(member)
+                .review(review)
+                .build();
+    }
 }
