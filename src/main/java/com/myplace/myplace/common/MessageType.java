@@ -10,7 +10,10 @@ public enum MessageType {
     PROFILE_REGISTER_SUCCESSFULLY("사진 등록이 완료되었습니다."),
     REVIEW_WRITE_SUCCESSFULLY("리뷰 작성이 완료되었습니다."),
     REVIEW_MODIFY_SUCCESSFULLY("리뷰 수정이 완료되었습니다."),
-    REVIEW_DELETE_SUCCESSFULLY("리뷰 삭제가 완료되었습니다.");
+    REVIEW_DELETE_SUCCESSFULLY("리뷰 삭제가 완료되었습니다."),
+    LIKE_ADD_SUCCESSFULLY("좋아요가 등록되었습니다."),
+    LIKE_DELETE_SUCCESSFULLY("좋아요가 취소되었습니다.")
+    ;
 
     private  String message;
 
