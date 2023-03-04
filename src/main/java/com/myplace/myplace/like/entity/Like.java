@@ -40,5 +40,3 @@ public class Like {
                 .build();
     }
 }
-
-}
