@@ -13,6 +13,7 @@ public enum MessageType {
     REVIEW_DELETE_SUCCESSFULLY("리뷰 삭제가 완료되었습니다.");
 
     private  String message;
+
     MessageType(String message) {
         this.message = message;
     }
