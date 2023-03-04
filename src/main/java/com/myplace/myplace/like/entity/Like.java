@@ -2,6 +2,7 @@ package com.myplace.myplace.like.entity;
 
 
 import com.myplace.myplace.member.entity.Member;
+import com.myplace.myplace.review.entity.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,4 +39,6 @@ public class Like {
                 .review(review)
                 .build();
     }
+}
+
 }
