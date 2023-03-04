@@ -24,22 +24,19 @@ public class LikeService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public SuccessResponseDto<LikeResponseDto> likeReview(Long id, LikeResponseDto likeRequestDto,
-                                                         Member member){
+    public SuccessResponseDto<LikeResponseDto> likeReview(Long id, Member member){
 
-        // DB에 Review가 있는지 확인
         Optional<Review> review = reviewRepository.findById(id);
         if(review.isEmpty()){
-            throw new IllegalArgumentException(ErrorType.NOT_FOUND_REViEW.getMessage());
+            throw new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage());
         }
 
-        // 리뷰 좋아요 히스토리 확인
         Optional<Like> findLike = likeRepository.findByMemberAndReview(member, review.get());
         int likeCount = likeRepository.findByReviewId(review.get().getId()).size();
-        if(findLike.isEmpty()){ // 없으면
+        if(findLike.isEmpty()){
             Like like = Like.of(member, review.get());
             likeRepository.save(like);
-        } else { // 있으면
+        } else {
             likeRepository.delete(findLike.get());
             return ResponseUtils.ok(LikeResponseDto.from(likeCount), MessageType.LIKE_DELETE_SUCCESSFULLY );
         }

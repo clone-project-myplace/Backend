@@ -1,6 +1,5 @@
 package com.myplace.myplace.like.dto;
 
-import com.myplace.myplace.like.entity.Like;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
