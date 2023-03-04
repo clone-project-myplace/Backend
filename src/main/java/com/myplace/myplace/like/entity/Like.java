@@ -27,7 +27,7 @@ public class Like {
     private Review review;
 
     @Builder
-    public Like(Member member, Review review){
+    private Like(Member member, Review review){
         this.member = member;
         this.review = review;
     }
