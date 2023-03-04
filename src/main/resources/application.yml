@@ -1,7 +1,7 @@
 spring:
   profiles:
     active:
-      - release
+      - local
     group:
       local:
         - db-local
