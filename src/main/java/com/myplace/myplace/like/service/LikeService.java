@@ -38,7 +38,7 @@ public class LikeService {
             likeRepository.save(like);
         } else {
             likeRepository.delete(findLike.get());
-            return ResponseUtils.ok(LikeResponseDto.from(likeCount), MessageType.LIKE_DELETE_SUCCESSFULLY );
+            return ResponseUtils.ok(LikeResponseDto.from(likeCount-1), MessageType.LIKE_DELETE_SUCCESSFULLY );
         }
 
         return ResponseUtils.ok(LikeResponseDto.from(likeCount+1), MessageType.LIKE_ADD_SUCCESSFULLY);
