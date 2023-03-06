@@ -81,21 +81,14 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public SuccessResponseDto<ReviewResponseDto> reviewDetail(Long id) {
 
-        Optional<Review> review = reviewRepository.findById(id);
+        Review review = reviewRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
+        );
 
-        String memberName = review.get().getMember().getMemberName();
-        String profileImgUrl = review.get().getMember().getImgUrl();
-        String restaurantName = review.get().getRestaurant().getName();
-        String restaurantAddress = review.get().getRestaurant().getAddress();
-        String reviewContents = review.get().getContents();
-        String reviewImgUrl = review.get().getImgUrl();
         int likeCount = likeRepository.countById(id);
-        List<ReviewKeyword> keywordList = review.get().getReviewKeywordList();
         int reviewCount = reviewRepository.countById(id);
-        LocalDateTime createdDate = review.get().getCreatedAt();
 
-        ReviewResponseDto reviewResponseDto = ReviewResponseDto.of(id, memberName, profileImgUrl, restaurantName, restaurantAddress,
-                                                                   reviewContents, reviewImgUrl, likeCount, keywordList,reviewCount, createdDate);
+        ReviewResponseDto reviewResponseDto = ReviewResponseDto.of(review, likeCount, reviewCount);
 
         return ResponseUtils.ok(reviewResponseDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }

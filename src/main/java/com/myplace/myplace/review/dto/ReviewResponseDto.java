@@ -1,5 +1,7 @@
 package com.myplace.myplace.review.dto;
 
+import com.myplace.myplace.member.entity.Member;
+import com.myplace.myplace.review.entity.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,21 +44,20 @@ public class ReviewResponseDto {
     }
 
     // [피드,리뷰] 상세 조회
-    public static ReviewResponseDto of(Long reviewId, String memberName, String profileImgUrl, String restaurantName, String restaurantAddress, String reviewContents,
-                                       String reviewImgUrl, int likeCount, List keywordList, int reviewCount, LocalDateTime createdDate) {
+    public static ReviewResponseDto of(Review review, int likeCount, int reviewCount) {
 
         return ReviewResponseDto.builder()
-                .reviewId(reviewId)
-                .memberName(memberName)
-                .profileImgUrl(profileImgUrl)
-                .restaurantName(restaurantName)
-                .restaurantAddress(restaurantAddress)
-                .reviewContents(reviewContents)
-                .reviewImgUrl(reviewImgUrl)
+                .reviewId(review.getId())
+                .memberName(review.getMember().getMemberName())
+                .profileImgUrl(review.getMember().getImgUrl())
+                .restaurantName(review.getRestaurant().getName())
+                .restaurantAddress(review.getRestaurant().getAddress())
+                .reviewContents(review.getContents())
+                .reviewImgUrl(review.getImgUrl())
                 .likeCount(likeCount)
-                .keywordList(keywordList)
+                .keywordList(review.getReviewKeywordList())
                 .reviewCount(reviewCount)
-                .createdDate(createdDate)
+                .createdDate(review.getCreatedAt())
                 .build();
     }
 
