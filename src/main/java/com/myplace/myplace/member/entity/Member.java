@@ -54,4 +54,8 @@ public class Member {
                 .imgUrl("default.image")
                 .build();
     }
+
+    public void update(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }
