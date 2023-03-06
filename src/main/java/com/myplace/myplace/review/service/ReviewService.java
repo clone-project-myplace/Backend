@@ -8,6 +8,7 @@ import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.restaurant.entity.Restaurant;
 import com.myplace.myplace.restaurant.repository.RestaurantRepository;
 import com.myplace.myplace.review.dto.ReviewRequestDto;
+import com.myplace.myplace.review.dto.ReviewUpdateDto;
 import com.myplace.myplace.review.entity.Keyword;
 import com.myplace.myplace.review.entity.KeywordType;
 import com.myplace.myplace.review.entity.Review;
@@ -62,4 +63,20 @@ public class ReviewService {
 
         return ResponseUtils.ok(MessageType.REVIEW_WRITE_SUCCESSFULLY);
     }
+
+    @Transactional
+    public SuccessResponseDto<Void> updateReview(Long id, ReviewUpdateDto requestDto, Member member){
+
+        Review review = reviewRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
+        );
+        if(!review.getMember().getMemberId().equals(member.getMemberId())){
+            throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
+        }
+
+        review.updateReview(requestDto);
+
+        return ResponseUtils.ok(MessageType.REVIEW_MODIFY_SUCCESSFULLY);
+    }
+
 }

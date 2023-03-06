@@ -2,6 +2,7 @@ package com.myplace.myplace.review.controller;
 
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.review.dto.ReviewRequestDto;
+import com.myplace.myplace.review.dto.ReviewUpdateDto;
 import com.myplace.myplace.review.service.ReviewService;
 import com.myplace.myplace.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -20,4 +21,10 @@ public class ReviewController {
     public SuccessResponseDto<Void> createReview(@PathVariable Long id, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return reviewService.createReview(id, requestDto, userDetails.getUser());
     }
+
+    @PutMapping("/reviews/{id}")
+    public SuccessResponseDto<Void> updateReview(@PathVariable Long id, @RequestBody ReviewUpdateDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return reviewService.updateReview(id, requestDto, userDetails.getUser());
+    }
+
 }
