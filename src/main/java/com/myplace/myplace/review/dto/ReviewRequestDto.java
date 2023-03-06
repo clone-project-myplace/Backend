@@ -14,4 +14,5 @@ public class ReviewRequestDto {
     private List<String> keywordList = new ArrayList<>();
     private MultipartFile reviewPhotoUrl;
     private String reviewContents;
+
 }
