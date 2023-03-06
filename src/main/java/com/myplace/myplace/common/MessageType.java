@@ -12,10 +12,11 @@ public enum MessageType {
     REVIEW_MODIFY_SUCCESSFULLY("리뷰 수정이 완료되었습니다."),
     REVIEW_DELETE_SUCCESSFULLY("리뷰 삭제가 완료되었습니다."),
     LIKE_ADD_SUCCESSFULLY("좋아요가 등록되었습니다."),
-    LIKE_DELETE_SUCCESSFULLY("좋아요가 취소되었습니다.")
+    LIKE_DELETE_SUCCESSFULLY("좋아요가 취소되었습니다."),
+    REVIEW_INQUIRY_SUCCESSFULLY("조회 성공")
     ;
 
-    private  String message;
+    private final String message;
 
     MessageType(String message) {
         this.message = message;
