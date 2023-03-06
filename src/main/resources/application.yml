@@ -13,17 +13,3 @@ spring:
     include:
       - db
       - common
-
-cloud:
-  aws:
-    s3:
-      bucket: myplace-bucket
-      dir: /myplace
-    credentials:
-      access-key: AKIA3PYQA6MW3VHMZSX3
-      secret-key: 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
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false

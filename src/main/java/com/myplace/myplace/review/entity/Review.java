@@ -4,7 +4,6 @@ package com.myplace.myplace.review.entity;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.restaurant.entity.Restaurant;
 import com.myplace.myplace.review.dto.ReviewRequestDto;
-import com.myplace.myplace.review.dto.ReviewUpdateDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,10 +60,6 @@ public class Review extends Timestamped {
 
     public void updateKeyword(List<ReviewKeyword> reviewKeywordList) {
         this.reviewKeywordList = reviewKeywordList;
-    }
-
-    public void updateReview(ReviewUpdateDto reviewUpdateDto){
-        this.contents = reviewUpdateDto.getContents();
     }
 
 }
