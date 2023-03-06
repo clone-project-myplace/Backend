@@ -3,6 +3,7 @@ package com.myplace.myplace.review.entity;
 
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.restaurant.entity.Restaurant;
+import com.myplace.myplace.review.dto.ReviewRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +46,15 @@ public class Review extends Timestamped {
         return Review.builder()
                 .contents(contents)
                 .imgUrl(imgUrl)
+                .member(member)
+                .restaurant(restaurant)
+                .build();
+    }
+
+    public static Review of(ReviewRequestDto reviewRequestDto, Member member,Restaurant restaurant){
+        return Review.builder()
+                .contents(reviewRequestDto.getReviewContents())
+                .imgUrl(reviewRequestDto.getReviewPhotoUrl())
                 .member(member)
                 .restaurant(restaurant)
                 .build();
