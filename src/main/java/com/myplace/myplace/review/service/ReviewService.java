@@ -11,6 +11,7 @@ import com.myplace.myplace.restaurant.entity.Restaurant;
 import com.myplace.myplace.restaurant.repository.RestaurantRepository;
 import com.myplace.myplace.review.dto.ReviewRequestDto;
 import com.myplace.myplace.review.dto.ReviewResponseDto;
+import com.myplace.myplace.review.dto.ReviewUpdateDto;
 import com.myplace.myplace.review.entity.Keyword;
 import com.myplace.myplace.review.entity.KeywordType;
 import com.myplace.myplace.review.entity.Review;
@@ -77,9 +78,11 @@ public class ReviewService {
         return ResponseUtils.ok(MessageType.REVIEW_WRITE_SUCCESSFULLY);
     }
 
+
     // [피드, 리뷰] 상세 조회
     @Transactional(readOnly = true)
     public SuccessResponseDto<ReviewResponseDto> reviewDetail(Long id) {
+
 
         Review review = reviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
@@ -91,5 +94,33 @@ public class ReviewService {
         ReviewResponseDto reviewResponseDto = ReviewResponseDto.of(review, likeCount, reviewCount);
 
         return ResponseUtils.ok(reviewResponseDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+   }
+
+
+    @Transactional
+    public SuccessResponseDto<Void> updateReview(Long id, ReviewUpdateDto requestDto, Member member) {
+
+        if(!review.getMember().getMemberId().equals(member.getMemberId())) {
+            throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
+        }
+
+        review.updateReview(requestDto);
+
+        return ResponseUtils.ok(MessageType.REVIEW_MODIFY_SUCCESSFULLY);
+    }
+
+    @Transactional
+    public SuccessResponseDto<Void> deleteReview(Long id, Member member) {
+
+        Review review = reviewRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
+        );
+        if(!review.getMember().getMemberId().equals(member.getMemberId())){
+            throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
+        }
+
+        reviewRepository.deleteById(id);
+
+        return ResponseUtils.ok(MessageType.REVIEW_DELETE_SUCCESSFULLY);
     }
 }
