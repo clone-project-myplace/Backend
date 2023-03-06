@@ -1,17 +1,17 @@
 package com.myplace.myplace.review.dto;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
 public class ReviewRequestDto {
 
-    private List<String> reviewKeywordList = new ArrayList<>();
-    private String reviewPhotoUrl;
+    private List<String> keywordList = new ArrayList<>();
+    private MultipartFile reviewPhotoUrl;
     private String reviewContents;
 }
