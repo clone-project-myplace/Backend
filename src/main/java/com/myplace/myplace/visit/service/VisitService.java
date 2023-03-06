@@ -1,14 +1,24 @@
 package com.myplace.myplace.visit.service;
 
+import com.myplace.myplace.common.MessageType;
+import com.myplace.myplace.common.ResponseUtils;
+import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.member.repository.MemberRepository;
 import com.myplace.myplace.restaurant.repository.RestaurantRepository;
+import com.myplace.myplace.review.entity.Review;
+import com.myplace.myplace.review.repository.ReviewRepository;
+import com.myplace.myplace.visit.dto.VisitResponseDto;
 import com.myplace.myplace.visit.entity.Visit;
 import com.myplace.myplace.visit.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +27,12 @@ public class VisitService {
     private final VisitRepository visitRepository;
     private final MemberRepository memberRepository;
     private final RestaurantRepository restaurantRepository;
+    private final ReviewRepository reviewRepository;
 
     @PostConstruct
     public void saveSampleVisit() {
 
-        Member member = Member.of("user1", "qwer1234", "닉네임1", "sample");
+        Member member = Member.of("user1", "$2a$10$mx7MQhug9XOtt3vWRRZkPOVDyMzYtYMQXvQVd/Pb3FgpUU3ohTExu", "닉네임1", "sample");
         memberRepository.save(member);
 
         visitRepository.save(Visit.of(member, restaurantRepository.findById(1L).get(), "23.1.3.화"));
@@ -38,6 +49,34 @@ public class VisitService {
         visitRepository.save(Visit.of(member, restaurantRepository.findById(12L).get(), "22.6.16.목"));
         visitRepository.save(Visit.of(member, restaurantRepository.findById(13L).get(), "22.6.24.금"));
         visitRepository.save(Visit.of(member, restaurantRepository.findById(14L).get(), "22.5.10.화"));
+
+    }
+
+    // [방문] 조회
+    @Transactional
+    public SuccessResponseDto<List<VisitResponseDto>> visitedRestaurants(Member member) {
+
+        List<Visit> visitList = visitRepository.findAllByMember_MemberId(member.getMemberId());
+
+        boolean isReviewsed = false;
+
+        List<VisitResponseDto> visitResponseDtoList = new ArrayList<>();
+
+        for(Visit v : visitList) {
+
+            Optional<Review> review = reviewRepository.findByMemberAndRestaurant(member, v.getRestaurant());
+
+            if(review.isPresent()) {
+                isReviewsed = true;
+            }
+
+            VisitResponseDto visitResponseDto = VisitResponseDto.of(v.getRestaurant().getId(), v.getRestaurant().getName(), v.getVisitDate(), isReviewsed);
+
+            visitResponseDtoList.add(visitResponseDto);
+
+        }
+
+        return ResponseUtils.ok(visitResponseDtoList, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
 
     }
 }
