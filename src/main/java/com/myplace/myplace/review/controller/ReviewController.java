@@ -2,6 +2,7 @@ package com.myplace.myplace.review.controller;
 
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.review.dto.ReviewRequestDto;
+import com.myplace.myplace.review.dto.ReviewResponseDto;
 import com.myplace.myplace.review.service.ReviewService;
 import com.myplace.myplace.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,11 @@ public class ReviewController {
     @PostMapping("/reviews/restaurants/{id}")
     public SuccessResponseDto<Void> createReview(@PathVariable Long id, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return reviewService.createReview(id, requestDto, userDetails.getUser());
+    }
+
+    // [피드, 리뷰] 상세 조회
+    @GetMapping("/reviews/{id}")
+    public SuccessResponseDto<ReviewResponseDto> reviewDetail(@PathVariable Long id) {
+        return reviewService.reviewDetail(id);
     }
 }
