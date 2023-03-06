@@ -3,12 +3,15 @@ package com.myplace.myplace.review.entity;
 
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.restaurant.entity.Restaurant;
+import com.myplace.myplace.review.dto.ReviewRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,21 +36,30 @@ public class Review extends Timestamped {
     @JoinColumn(name = "restaurantId", nullable = false)
     private Restaurant restaurant;
 
+    @OneToMany
+    private List<ReviewKeyword> reviewKeywordList = new ArrayList<>();
+
     @Builder
-    private Review(String contents, String imgUrl, Member member, Restaurant restaurant){
+    private Review(String contents, String imgUrl, Member member, Restaurant restaurant, List<ReviewKeyword> reviewKeywordList){
         this.contents = contents;
         this.imgUrl = imgUrl;
         this.member = member;
         this.restaurant = restaurant;
+        this.reviewKeywordList = reviewKeywordList;
     }
 
-    public static Review of(String contents, String imgUrl, Member member, Restaurant restaurant){
+    public static Review of(ReviewRequestDto requestDto, Member member, Restaurant restaurant){
         return Review.builder()
-                .contents(contents)
-                .imgUrl(imgUrl)
+                .contents(requestDto.getReviewContents())
+                .imgUrl(requestDto.getReviewPhotoUrl())
                 .member(member)
                 .restaurant(restaurant)
+                .reviewKeywordList(new ArrayList<>())
                 .build();
+    }
+
+    public void updateKeyword(List<ReviewKeyword> reviewKeywordList) {
+        this.reviewKeywordList = reviewKeywordList;
     }
 
 }
