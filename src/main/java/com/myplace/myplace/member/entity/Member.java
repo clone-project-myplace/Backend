@@ -51,7 +51,7 @@ public class Member {
                 .memberId(requestDto.getMemberId())
                 .memberPw(encodePw)
                 .memberName(requestDto.getMemberName())
-                .imgUrl("default.image")
+                .imgUrl("https://myplace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg")
                 .build();
     }
 
