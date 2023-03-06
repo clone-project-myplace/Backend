@@ -11,4 +11,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findByMemberAndRestaurant(Member member, Restaurant restaurant);
 
+    int countById(Long id);
+
 }
