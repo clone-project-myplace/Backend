@@ -6,16 +6,23 @@ import com.myplace.myplace.common.ResponseUtils;
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.jwt.JwtUtil;
 import com.myplace.myplace.member.dto.LoginRequestDto;
+import com.myplace.myplace.member.dto.ProfileRequestDto;
 import com.myplace.myplace.member.dto.SignupRequestDto;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.member.repository.MemberRepository;
+import com.myplace.myplace.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -24,6 +31,8 @@ public class MemberService {
 
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+
+    private final S3Uploader s3Uploader;
 
     public SuccessResponseDto<Void> signup(SignupRequestDto requestDto) {
 
@@ -67,5 +76,17 @@ public class MemberService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         return ResponseUtils.ok(MessageType.LOGIN_SUCCESSFULLY);
+    }
+
+    @Transactional
+    public SuccessResponseDto<Void> uploadPhoto(ProfileRequestDto requestDto, Member member) throws IOException {
+
+        MultipartFile img = requestDto.getImgUrl();
+        String imgUrl = s3Uploader.upload(img);
+
+        member.update(imgUrl);
+        memberRepository.save(member);
+
+        return ResponseUtils.ok(MessageType.PROFILE_REGISTER_SUCCESSFULLY);
     }
 }
