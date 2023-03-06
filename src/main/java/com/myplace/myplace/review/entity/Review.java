@@ -48,10 +48,10 @@ public class Review extends Timestamped {
         this.reviewKeywordList = reviewKeywordList;
     }
 
-    public static Review of(ReviewRequestDto requestDto, Member member, Restaurant restaurant){
+    public static Review of(ReviewRequestDto requestDto, String imgUrl, Member member, Restaurant restaurant){
         return Review.builder()
                 .contents(requestDto.getReviewContents())
-                .imgUrl(requestDto.getReviewPhotoUrl())
+                .imgUrl(imgUrl)
                 .member(member)
                 .restaurant(restaurant)
                 .reviewKeywordList(new ArrayList<>())

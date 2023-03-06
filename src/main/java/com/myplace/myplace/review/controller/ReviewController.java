@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -18,7 +20,7 @@ public class ReviewController {
 
     // 리뷰 작성
     @PostMapping("/reviews/restaurants/{id}")
-    public SuccessResponseDto<Void> createReview(@PathVariable Long id, @RequestBody ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public SuccessResponseDto<Void> createReview(@PathVariable Long id, @ModelAttribute ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return reviewService.createReview(id, requestDto, userDetails.getUser());
     }
 
