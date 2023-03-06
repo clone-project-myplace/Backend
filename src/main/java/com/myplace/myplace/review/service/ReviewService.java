@@ -88,4 +88,18 @@ public class ReviewService {
         return ResponseUtils.ok(MessageType.REVIEW_MODIFY_SUCCESSFULLY);
     }
 
+    @Transactional
+    public SuccessResponseDto<Void> deleteReview(Long id, Member member){
+
+        Review review = reviewRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
+        );
+        if(!review.getMember().getMemberId().equals(member.getMemberId())){
+            throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
+        }
+
+        reviewRepository.deleteById(id);
+
+        return ResponseUtils.ok(MessageType.REVIEW_DELETE_SUCCESSFULLY);
+    }
 }
