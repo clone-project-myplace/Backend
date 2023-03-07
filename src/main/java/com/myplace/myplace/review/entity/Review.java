@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "REVIEW")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends Timestamped {
 
@@ -38,7 +37,7 @@ public class Review extends Timestamped {
     @JoinColumn(name = "restaurantId", nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany
+    @OneToMany(mappedBy = "review")
     private List<ReviewKeyword> reviewKeywordList = new ArrayList<>();
 
     @Builder

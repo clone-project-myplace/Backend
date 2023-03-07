@@ -21,7 +21,7 @@ public class ReviewKeyword {
     private Review review;
 
     @ManyToOne
-    @JoinColumn(name = "keword_id")
+    @JoinColumn(name = "keyword_id")
     private Keyword keyword;
 
     @Builder
