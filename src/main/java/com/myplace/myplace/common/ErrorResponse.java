@@ -24,6 +24,7 @@ public class ErrorResponse {
 
     public static ErrorResponse of(String msg){
         return ErrorResponse.builder()
+                .status(400)
                 .msg(msg)
                 .build();
     }
