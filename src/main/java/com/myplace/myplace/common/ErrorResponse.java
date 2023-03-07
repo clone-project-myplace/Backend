@@ -2,7 +2,7 @@ package com.myplace.myplace.common;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 
 @Getter
 public class ErrorResponse {
@@ -27,5 +27,15 @@ public class ErrorResponse {
                 .status(400)
                 .msg(msg)
                 .build();
+    }
+
+    public static ErrorResponse of(BindingResult bindingResult) {
+        String message = "";
+
+        if (bindingResult.hasErrors()) {
+            message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+        }
+
+        return ErrorResponse.of(message);
     }
 }
