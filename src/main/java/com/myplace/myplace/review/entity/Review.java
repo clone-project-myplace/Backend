@@ -16,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "REVIEW")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends Timestamped {
 
@@ -23,7 +24,7 @@ public class Review extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String contents;
 
     @Column(nullable = false)
