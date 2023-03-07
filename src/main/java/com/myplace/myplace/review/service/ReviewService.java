@@ -23,11 +23,10 @@ import com.myplace.myplace.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +42,6 @@ public class ReviewService {
     private final S3Uploader s3Uploader;
 
 
-    // 리뷰 작성
     @Transactional
     public SuccessResponseDto<Void> createReview(Long id, ReviewRequestDto requestDto, Member member) throws IOException {
 
@@ -52,9 +50,6 @@ public class ReviewService {
         );
 
         String imgUrl = s3Uploader.upload(requestDto.getReviewPhotoUrl());
-
-        member.update(imgUrl);
-        memberRepository.save(member);
 
         Review review = Review.of(requestDto, imgUrl, member, restaurant);
 
@@ -78,11 +73,8 @@ public class ReviewService {
         return ResponseUtils.ok(MessageType.REVIEW_WRITE_SUCCESSFULLY);
     }
 
-
-    // [피드, 리뷰] 상세 조회
     @Transactional(readOnly = true)
     public SuccessResponseDto<ReviewResponseDto> reviewDetail(Long id) {
-
 
         Review review = reviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
@@ -96,9 +88,12 @@ public class ReviewService {
         return ResponseUtils.ok(reviewResponseDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
    }
 
-
     @Transactional
     public SuccessResponseDto<Void> updateReview(Long id, ReviewUpdateDto requestDto, Member member) {
+
+        Review review = reviewRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
+        );
 
         if(!review.getMember().getMemberId().equals(member.getMemberId())) {
             throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
@@ -115,6 +110,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
+
         if(!review.getMember().getMemberId().equals(member.getMemberId())){
             throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
         }
