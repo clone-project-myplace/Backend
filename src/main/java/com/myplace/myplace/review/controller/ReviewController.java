@@ -44,9 +44,8 @@ public class ReviewController {
         return reviewService.myreviews(userDetails.getUser());
     }
 
-//    @GetMapping("/reviews")
-//    public SuccessResponseDto<List<FeedReviewResponseDto>> feedReviews() {
-//        return reviewService.feedReviews();
-//    }
-
+    @GetMapping("/reviews")
+    public SuccessResponseDto<FeedPageResponseDto> feedReviews(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
+        return reviewService.feedReviews(pageNo);
+    }
 }
