@@ -103,6 +103,8 @@ public class ReviewService {
             throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
         }
 
+        likeRepository.deleteAllByReviewId(id);
+
         reviewRepository.deleteById(id);
 
         return ResponseUtils.ok(MessageType.REVIEW_DELETE_SUCCESSFULLY);
