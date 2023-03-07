@@ -2,6 +2,7 @@ package com.myplace.myplace.member.controller;
 
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.member.dto.LoginRequestDto;
+import com.myplace.myplace.member.dto.LoginResponseDto;
 import com.myplace.myplace.member.dto.ProfileRequestDto;
 import com.myplace.myplace.member.dto.SignupRequestDto;
 import com.myplace.myplace.member.service.MemberService;
@@ -29,7 +30,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public SuccessResponseDto<Void> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+    public SuccessResponseDto<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
         return memberService.login(requestDto, response);
     }
 
