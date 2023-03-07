@@ -6,6 +6,7 @@ import com.myplace.myplace.common.ResponseUtils;
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.jwt.JwtUtil;
 import com.myplace.myplace.member.dto.LoginRequestDto;
+import com.myplace.myplace.member.dto.LoginResponseDto;
 import com.myplace.myplace.member.dto.ProfileRequestDto;
 import com.myplace.myplace.member.dto.SignupRequestDto;
 import com.myplace.myplace.member.entity.Member;
@@ -56,7 +57,7 @@ public class MemberService {
         return ResponseUtils.ok(MessageType.SIGNUP_SUCCESSFULLY);
     }
 
-    public SuccessResponseDto<Void> login(LoginRequestDto requestDto, HttpServletResponse response) {
+    public SuccessResponseDto<LoginResponseDto> login(LoginRequestDto requestDto, HttpServletResponse response) {
 
         String memberId = requestDto.getMemberId();
         String memberPw = requestDto.getMemberPw();
@@ -75,7 +76,7 @@ public class MemberService {
         String token = jwtUtil.createToken(member.getMemberName());
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
-        return ResponseUtils.ok(MessageType.LOGIN_SUCCESSFULLY);
+        return ResponseUtils.ok(LoginResponseDto.from(member.getMemberName()), MessageType.LOGIN_SUCCESSFULLY);
     }
 
     @Transactional
