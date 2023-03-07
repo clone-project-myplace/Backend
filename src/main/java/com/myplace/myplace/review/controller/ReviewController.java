@@ -29,6 +29,7 @@ public class ReviewController {
     @GetMapping("/reviews/{id}")
     public SuccessResponseDto<ReviewResponseDto> reviewDetail(@PathVariable Long id) {
         return reviewService.reviewDetail(id);
+    }
 
     @PutMapping("/reviews/{id}")
     public SuccessResponseDto<Void> updateReview(@PathVariable Long id, @RequestBody ReviewUpdateDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
