@@ -6,7 +6,6 @@ import com.myplace.myplace.common.ResponseUtils;
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.like.repository.LikeRepository;
 import com.myplace.myplace.member.entity.Member;
-import com.myplace.myplace.member.repository.MemberRepository;
 import com.myplace.myplace.restaurant.entity.Restaurant;
 import com.myplace.myplace.restaurant.repository.RestaurantRepository;
 import com.myplace.myplace.review.dto.*;
@@ -19,7 +18,9 @@ import com.myplace.myplace.review.repository.ReviewKeywordRepository;
 import com.myplace.myplace.review.repository.ReviewRepository;
 import com.myplace.myplace.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,6 @@ public class ReviewService {
     private final KeywordRepository keywordRepository;
     private final ReviewKeywordRepository reviewKeywordRepository;
     private final LikeRepository likeRepository;
-    private final MemberRepository memberRepository;
 
     private final S3Uploader s3Uploader;
 
@@ -74,6 +74,7 @@ public class ReviewService {
         return ResponseUtils.ok(MessageType.REVIEW_WRITE_SUCCESSFULLY);
     }
 
+
     @Transactional
     public SuccessResponseDto<Void> updateReview(Long id, ReviewUpdateDto requestDto, Member member) {
 
@@ -89,6 +90,7 @@ public class ReviewService {
 
         return ResponseUtils.ok(MessageType.REVIEW_MODIFY_SUCCESSFULLY);
     }
+
 
     @Transactional
     public SuccessResponseDto<Void> deleteReview(Long id, Member member) {
@@ -106,7 +108,6 @@ public class ReviewService {
         return ResponseUtils.ok(MessageType.REVIEW_DELETE_SUCCESSFULLY);
     }
 
-    // [피드, 리뷰] 상세 조회
 
     @Transactional(readOnly = true)
     public SuccessResponseDto<ReviewDetailDto> reviewDetail(Long id) {
@@ -125,22 +126,22 @@ public class ReviewService {
         }
 
         int likeCount = likeRepository.findByReviewId(id).size();
-        int reviewCount = reviewRepository.findByMember_Id(review.getMember().getId()).size();
+        int reviewCount = reviewRepository.findByMemberId(review.getMember().getId()).size();
 
         ReviewDetailDto reviewDetailDto = ReviewDetailDto.of(review, likeCount, reviewCount, reviewKeywordList);
 
         return ResponseUtils.ok(reviewDetailDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
 
-//    // 리뷰 조회
+
     @Transactional(readOnly = true)
     public SuccessResponseDto<List<ReviewResponseDto>> myreviews(Member member) {
 
-        List<Review> reviewList = reviewRepository.findByMember_Id(member.getId());
+        List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
 
         List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
 
-        int reviewCount = reviewRepository.findByMember_Id(member.getId()).size();
+        int reviewCount = reviewRepository.findByMemberId(member.getId()).size();
 
         for(Review r : reviewList) {
 
@@ -151,6 +152,7 @@ public class ReviewService {
 
         return ResponseUtils.ok(reviewResponseDtoList, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
+
 
     @Transactional(readOnly = true)
     public SuccessResponseDto<FeedPageResponseDto> feedReviews(int pageNo) {
@@ -183,17 +185,21 @@ public class ReviewService {
         return ResponseUtils.ok(pageResponse, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
 
-    private static Page<FeedReviewResponseDto> getReviewPage(int pageNo, List<FeedReviewResponseDto> feedReviewResponseDtoList) {
-        PageRequest pageRequest = PageRequest.of(pageNo, PAGE_SIZE);
-        int start = (int) pageRequest.getOffset();
-        int end = Math.min((start + pageRequest.getPageSize()), feedReviewResponseDtoList.size());
 
-        if (end < pageNo) {
+    private static Page<FeedReviewResponseDto> getReviewPage(int pageNo, List<FeedReviewResponseDto> feedReviewResponseDtoList) {
+        try {
+            PageRequest pageRequest = PageRequest.of(pageNo, PAGE_SIZE);
+
+            int start = (int) pageRequest.getOffset();
+            int end = Math.min((start + pageRequest.getPageSize()), feedReviewResponseDtoList.size());
+
+            Page<FeedReviewResponseDto> reviewPage = new PageImpl<>(feedReviewResponseDtoList.subList(start, end), pageRequest, feedReviewResponseDtoList.size());
+
+            return reviewPage;
+
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(ErrorType.NOT_EXISTING_PAGE.getMessage());
         }
-
-        Page<FeedReviewResponseDto> reviewPage = new PageImpl<>(feedReviewResponseDtoList.subList(start, end), pageRequest, feedReviewResponseDtoList.size());
-        return reviewPage;
     }
 
 }
