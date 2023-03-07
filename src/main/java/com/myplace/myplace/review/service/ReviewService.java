@@ -9,9 +9,7 @@ import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.member.repository.MemberRepository;
 import com.myplace.myplace.restaurant.entity.Restaurant;
 import com.myplace.myplace.restaurant.repository.RestaurantRepository;
-import com.myplace.myplace.review.dto.ReviewRequestDto;
-import com.myplace.myplace.review.dto.ReviewResponseDto;
-import com.myplace.myplace.review.dto.ReviewUpdateDto;
+import com.myplace.myplace.review.dto.*;
 import com.myplace.myplace.review.entity.Keyword;
 import com.myplace.myplace.review.entity.KeywordType;
 import com.myplace.myplace.review.entity.Review;
@@ -21,6 +19,7 @@ import com.myplace.myplace.review.repository.ReviewKeywordRepository;
 import com.myplace.myplace.review.repository.ReviewRepository;
 import com.myplace.myplace.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +40,8 @@ public class ReviewService {
 
     private final S3Uploader s3Uploader;
 
+    private static final int PAGE_SIZE = 10;
+
 
     @Transactional
     public SuccessResponseDto<Void> createReview(Long id, ReviewRequestDto requestDto, Member member) throws IOException {
@@ -55,7 +56,7 @@ public class ReviewService {
 
         List<ReviewKeyword> reviewKeywordList = new ArrayList<>();
 
-        for (String keywordStr : requestDto.getKeywordList()) {
+        for (String keywordStr : requestDto.getReviewKeywordList()) {
 
             KeywordType type = KeywordType.valueOf(keywordStr);
             Keyword keyword = Keyword.of(type);
@@ -80,8 +81,8 @@ public class ReviewService {
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
 
-        int likeCount = likeRepository.countById(id);
-        int reviewCount = reviewRepository.countById(id);
+        int likeCount = likeRepository.findByReviewId(review.getId()).size();
+        int reviewCount = reviewRepository.findByMemberId(review.getMember().getId()).size();
 
         ReviewResponseDto reviewResponseDto = ReviewResponseDto.of(review, likeCount, reviewCount);
 
@@ -119,4 +120,49 @@ public class ReviewService {
 
         return ResponseUtils.ok(MessageType.REVIEW_DELETE_SUCCESSFULLY);
     }
+
+    @Transactional(readOnly = true)
+    public SuccessResponseDto<FeedPageResponseDto> feedReviews(int pageNo) {
+
+        List<Review> reviewList = reviewRepository.findAll();
+
+        List<FeedReviewResponseDto> feedReviewResponseDtoList = new ArrayList<>();
+
+        for(Review review : reviewList) {
+
+            int likeCount = likeRepository.findByReviewId(review.getId()).size();
+            int reviewCount = reviewRepository.findByMemberId(review.getMember().getId()).size();
+
+            List<String> keywordList = new ArrayList<>();
+            for (ReviewKeyword k : review.getReviewKeywordList()) {
+                String keyword = k.getKeyword().getType().getMsg();
+                keywordList.add(keyword);
+            }
+
+            FeedReviewResponseDto feedReviewResponseDto = FeedReviewResponseDto.of(review, likeCount, reviewCount, keywordList);
+
+            feedReviewResponseDtoList.add(feedReviewResponseDto);
+        }
+
+        Page<FeedReviewResponseDto> reviewPage = getReviewPage(pageNo, feedReviewResponseDtoList);
+
+        boolean isLastPage = (pageNo == (reviewPage.getTotalPages() - 1));
+        FeedPageResponseDto pageResponse = FeedPageResponseDto.of(isLastPage, reviewPage.getContent());
+
+        return ResponseUtils.ok(pageResponse, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+    }
+
+    private static Page<FeedReviewResponseDto> getReviewPage(int pageNo, List<FeedReviewResponseDto> feedReviewResponseDtoList) {
+        PageRequest pageRequest = PageRequest.of(pageNo, PAGE_SIZE);
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), feedReviewResponseDtoList.size());
+
+        if (end < pageNo) {
+            throw new IllegalArgumentException(ErrorType.NOT_EXISTING_PAGE.getMessage());
+        }
+
+        Page<FeedReviewResponseDto> reviewPage = new PageImpl<>(feedReviewResponseDtoList.subList(start, end), pageRequest, feedReviewResponseDtoList.size());
+        return reviewPage;
+    }
+
 }

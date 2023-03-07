@@ -1,6 +1,7 @@
 package com.myplace.myplace.review.controller;
 
 import com.myplace.myplace.common.SuccessResponseDto;
+import com.myplace.myplace.review.dto.FeedPageResponseDto;
 import com.myplace.myplace.review.dto.ReviewRequestDto;
 import com.myplace.myplace.review.dto.ReviewResponseDto;
 import com.myplace.myplace.review.dto.ReviewUpdateDto;
@@ -38,5 +39,10 @@ public class ReviewController {
     @DeleteMapping("/reviews/{id}")
     public SuccessResponseDto<Void> deleteReview(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return reviewService.deleteReview(id, userDetails.getUser());
+    }
+
+    @GetMapping("/reviews")
+    public SuccessResponseDto<FeedPageResponseDto> feedReviews(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo) {
+        return reviewService.feedReviews(pageNo);
     }
 }

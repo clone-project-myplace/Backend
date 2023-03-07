@@ -12,7 +12,8 @@ public enum ErrorType {
     NOT_MATCHING_INFO(401, " 아이디 또는 비밀번호를 잘못 입력했습니다."),
     NOT_FOUND_REVIEW(400, "등록된 리뷰가 없습니다."),
     NOT_FOUND_RESTAURANT(400, "등록된 음식점이 없습니다."),
-    NOT_WRITER(400, "작성자만 수정/삭제할 수 있습니다.")
+    NOT_WRITER(400, "작성자만 수정/삭제할 수 있습니다."),
+    NOT_EXISTING_PAGE(400, "해당 페이지 번호에는 데이터가 존재하지 않습니다.")
     ;
 
     private int code;
