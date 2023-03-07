@@ -37,7 +37,7 @@ public class Review extends Timestamped {
     @JoinColumn(name = "restaurantId", nullable = false)
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<ReviewKeyword> reviewKeywordList = new ArrayList<>();
 
     @Builder
