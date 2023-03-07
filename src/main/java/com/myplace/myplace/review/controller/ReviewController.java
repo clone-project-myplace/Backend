@@ -19,13 +19,12 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    // 리뷰 작성
+
     @PostMapping("/reviews/restaurants/{id}")
     public SuccessResponseDto<Void> createReview(@PathVariable Long id, @ModelAttribute ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return reviewService.createReview(id, requestDto, userDetails.getUser());
     }
 
-    // [피드, 리뷰] 상세 조회
     @GetMapping("/reviews/{id}")
     public SuccessResponseDto<ReviewResponseDto> reviewDetail(@PathVariable Long id) {
         return reviewService.reviewDetail(id);
