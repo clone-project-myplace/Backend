@@ -17,7 +17,7 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PutMapping("/api/reviews/{id}")
+    @PutMapping("/api/reviews/likes/{id}")
     public SuccessResponseDto<LikeResponseDto> likeReview(@PathVariable Long id,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails){
             return likeService.likeReview(id, userDetails.getUser());

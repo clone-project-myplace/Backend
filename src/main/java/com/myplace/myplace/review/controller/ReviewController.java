@@ -18,6 +18,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+
     @PostMapping("/reviews/restaurants/{id}")
     public SuccessResponseDto<Void> createReview(@PathVariable Long id, @ModelAttribute ReviewRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return reviewService.createReview(id, requestDto, userDetails.getUser());

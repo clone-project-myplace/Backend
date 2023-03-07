@@ -49,9 +49,6 @@ public class ReviewService {
 
         String imgUrl = s3Uploader.upload(requestDto.getReviewPhotoUrl());
 
-        member.update(imgUrl);
-        memberRepository.save(member);
-
         Review review = Review.of(requestDto, imgUrl, member, restaurant);
 
         List<ReviewKeyword> reviewKeywordList = new ArrayList<>();
@@ -81,6 +78,7 @@ public class ReviewService {
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
 
+
         if(!review.getMember().getMemberId().equals(member.getMemberId())) {
             throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
         }
@@ -96,6 +94,7 @@ public class ReviewService {
         Review review = reviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
+
         if(!review.getMember().getMemberId().equals(member.getMemberId())){
             throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
         }
