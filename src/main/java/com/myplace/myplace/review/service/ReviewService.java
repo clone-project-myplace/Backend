@@ -74,21 +74,6 @@ public class ReviewService {
         return ResponseUtils.ok(MessageType.REVIEW_WRITE_SUCCESSFULLY);
     }
 
-    @Transactional(readOnly = true)
-    public SuccessResponseDto<ReviewResponseDto> reviewDetail(Long id) {
-
-        Review review = reviewRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
-        );
-
-        int likeCount = likeRepository.findByReviewId(review.getId()).size();
-        int reviewCount = reviewRepository.findByMemberId(review.getMember().getId()).size();
-
-        ReviewResponseDto reviewResponseDto = ReviewResponseDto.of(review, likeCount, reviewCount);
-
-        return ResponseUtils.ok(reviewResponseDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
-   }
-
     @Transactional
     public SuccessResponseDto<Void> updateReview(Long id, ReviewUpdateDto requestDto, Member member) {
 
@@ -119,6 +104,52 @@ public class ReviewService {
         reviewRepository.deleteById(id);
 
         return ResponseUtils.ok(MessageType.REVIEW_DELETE_SUCCESSFULLY);
+    }
+
+    // [피드, 리뷰] 상세 조회
+
+    @Transactional(readOnly = true)
+    public SuccessResponseDto<ReviewDetailDto> reviewDetail(Long id) {
+
+
+        Review review = reviewRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
+        );
+
+        List<String> reviewKeywordList = new ArrayList<>();
+
+        for(ReviewKeyword r : review.getReviewKeywordList()) {
+            String keywordList = r.getKeyword().getType().getMsg();
+
+            reviewKeywordList.add(keywordList);
+        }
+
+        int likeCount = likeRepository.findByReviewId(id).size();
+        int reviewCount = reviewRepository.findByMember_Id(review.getMember().getId()).size();
+
+        ReviewDetailDto reviewDetailDto = ReviewDetailDto.of(review, likeCount, reviewCount, reviewKeywordList);
+
+        return ResponseUtils.ok(reviewDetailDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+    }
+
+//    // 리뷰 조회
+    @Transactional(readOnly = true)
+    public SuccessResponseDto<List<ReviewResponseDto>> myreviews(Member member) {
+
+        List<Review> reviewList = reviewRepository.findByMember_Id(member.getId());
+
+        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+
+        int reviewCount = reviewRepository.findByMember_Id(member.getId()).size();
+
+        for(Review r : reviewList) {
+
+            ReviewResponseDto reviewResponseDto = ReviewResponseDto.of(r, reviewCount);
+
+            reviewResponseDtoList.add(reviewResponseDto);
+        }
+
+        return ResponseUtils.ok(reviewResponseDtoList, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
 
     @Transactional(readOnly = true)

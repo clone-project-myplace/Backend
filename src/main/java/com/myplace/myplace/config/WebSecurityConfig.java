@@ -68,7 +68,6 @@ public class WebSecurityConfig {
             return cors;
         });
 
-
         return http.build();
     }
 

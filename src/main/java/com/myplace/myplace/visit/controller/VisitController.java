@@ -18,7 +18,6 @@ public class VisitController {
 
     private final VisitService visitService;
 
-    // [방문] 조회
     @GetMapping("/reviews/visits")
     public SuccessResponseDto<List<VisitResponseDto>> visitedRestaurants(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
