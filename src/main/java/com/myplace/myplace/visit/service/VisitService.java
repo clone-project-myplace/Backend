@@ -58,7 +58,6 @@ public class VisitService {
 
         List<Visit> visitList = visitRepository.findAllByMember_MemberId(member.getMemberId());
 
-        boolean isReviewsed = false;
 
         List<VisitResponseDto> visitResponseDtoList = new ArrayList<>();
 
@@ -66,11 +65,13 @@ public class VisitService {
 
             Optional<Review> review = reviewRepository.findByMemberAndRestaurant(member, v.getRestaurant());
 
+            boolean isReviewed = false;
+
             if(review.isPresent()) {
-                isReviewsed = true;
+                isReviewed = true;
             }
 
-            VisitResponseDto visitResponseDto = VisitResponseDto.of(v.getRestaurant().getId(), v.getRestaurant().getName(), v.getVisitDate(), isReviewsed);
+            VisitResponseDto visitResponseDto = VisitResponseDto.of(v.getRestaurant().getId(), v.getRestaurant().getName(), v.getVisitDate(), isReviewed);
 
             visitResponseDtoList.add(visitResponseDto);
 
