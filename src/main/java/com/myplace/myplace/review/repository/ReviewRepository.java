@@ -5,12 +5,15 @@ import com.myplace.myplace.restaurant.entity.Restaurant;
 import com.myplace.myplace.review.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findByMemberAndRestaurant(Member member, Restaurant restaurant);
 
-    int countById(Long id);
+    List<Review> findReviewById(Long id);
+
+    List<Review> findByMember_Id(Long id);
 
 }
