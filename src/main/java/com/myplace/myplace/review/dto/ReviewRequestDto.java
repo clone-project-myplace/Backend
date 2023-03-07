@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class ReviewRequestDto {
 
-    private List<String> keywordList = new ArrayList<>();
+    private List<String> reviewKeywordList;
     private MultipartFile reviewPhotoUrl;
     private String reviewContents;
 
