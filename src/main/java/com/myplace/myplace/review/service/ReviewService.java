@@ -78,7 +78,6 @@ public class ReviewService {
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
 
-
         if(!review.getMember().getMemberId().equals(member.getMemberId())) {
             throw new IllegalArgumentException(ErrorType.NOT_WRITER.getMessage());
         }
