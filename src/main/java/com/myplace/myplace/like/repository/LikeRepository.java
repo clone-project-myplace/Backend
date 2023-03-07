@@ -12,5 +12,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByMemberAndReview(Member member, Review review);
     List<Like> findByReviewId(Long id);
 
-    int countById(Long id);
+    int countByReview_Id(Long id);
 }
