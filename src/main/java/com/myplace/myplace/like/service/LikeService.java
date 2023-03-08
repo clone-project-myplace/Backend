@@ -31,6 +31,8 @@ public class LikeService {
             throw new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage());
         }
 
+        boolean isPushed = false;
+
         Optional<Like> findLike = likeRepository.findByMemberAndReview(member, review.get());
         int likeCount = likeRepository.findByReviewId(review.get().getId()).size();
         if(findLike.isEmpty()){
@@ -38,9 +40,10 @@ public class LikeService {
             likeRepository.save(like);
         } else {
             likeRepository.delete(findLike.get());
-            return ResponseUtils.ok(LikeResponseDto.from(likeCount-1), MessageType.LIKE_DELETE_SUCCESSFULLY );
+            return ResponseUtils.ok(LikeResponseDto.from(likeCount-1, isPushed), MessageType.LIKE_DELETE_SUCCESSFULLY );
         }
 
-        return ResponseUtils.ok(LikeResponseDto.from(likeCount+1), MessageType.LIKE_ADD_SUCCESSFULLY);
+        isPushed = true;
+        return ResponseUtils.ok(LikeResponseDto.from(likeCount+1, isPushed), MessageType.LIKE_ADD_SUCCESSFULLY);
     }
 }
