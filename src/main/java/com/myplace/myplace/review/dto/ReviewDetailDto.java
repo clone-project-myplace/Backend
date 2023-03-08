@@ -24,10 +24,11 @@ public class ReviewDetailDto {
     private List<String> keywordList;
     private int reviewCount;
     private LocalDateTime createdDate;
+    private Boolean isPushed;
 
     @Builder
     private ReviewDetailDto(Long reviewId, String memberName, String profileImgUrl, String restaurantName, String restaurantAddress, String reviewContents,
-                              String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate) {
+                              String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate, Boolean isPushed) {
 
         this.reviewId = reviewId;
         this.memberName = memberName;
@@ -40,9 +41,10 @@ public class ReviewDetailDto {
         this.keywordList = keywordList;
         this.reviewCount = reviewCount;
         this.createdDate = createdDate;
+        this.isPushed = isPushed;
     }
 
-    public static ReviewDetailDto of(Review review, int likeCount, int reviewCount, List<String> keywordList) {
+    public static ReviewDetailDto of(Review review, int likeCount, int reviewCount, List<String> keywordList, Boolean isPushed) {
 
         return ReviewDetailDto.builder()
                 .reviewId(review.getId())
@@ -56,6 +58,7 @@ public class ReviewDetailDto {
                 .keywordList(keywordList)
                 .reviewCount(reviewCount)
                 .createdDate(review.getCreatedAt())
+                .isPushed(isPushed)
                 .build();
     }
 }

@@ -35,8 +35,8 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{id}")
-    public SuccessResponseDto<ReviewDetailDto> reviewDetail(@PathVariable Long id) {
-        return reviewService.reviewDetail(id);
+    public SuccessResponseDto<ReviewDetailDto> reviewDetail(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+        return reviewService.reviewDetail(userDetails == null ? null : userDetails.getUser(), id);
     }
 
     @GetMapping("/myreviews")
