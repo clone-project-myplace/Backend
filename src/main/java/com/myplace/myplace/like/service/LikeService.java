@@ -31,7 +31,7 @@ public class LikeService {
             throw new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage());
         }
 
-        boolean isPushed = false;
+        Boolean isPushed = false;
 
         Optional<Like> findLike = likeRepository.findByMemberAndReview(member, review.get());
         int likeCount = likeRepository.findByReviewId(review.get().getId()).size();

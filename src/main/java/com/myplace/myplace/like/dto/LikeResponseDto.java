@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 public class LikeResponseDto {
 
     private int likeCount;
-    private boolean isPushed;
+    private Boolean isPushed;
 
     @Builder
-    private LikeResponseDto(int likeCount, boolean isPushed){
+    private LikeResponseDto(int likeCount, Boolean isPushed){
         this.likeCount = likeCount;
         this.isPushed = isPushed;
     }
 
-    public static LikeResponseDto from(int likeCount, boolean isPushed){
+    public static LikeResponseDto from(int likeCount, Boolean isPushed){
         return LikeResponseDto.builder()
                 .likeCount(likeCount)
                 .isPushed(isPushed)
