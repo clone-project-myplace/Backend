@@ -21,6 +21,6 @@ public class VisitController {
     @GetMapping("/reviews/visits")
     public SuccessResponseDto<List<VisitResponseDto>> visitedRestaurants(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        return visitService.visitedRestaurants(userDetails.getUser());
+        return visitService.visitedRestaurants(userDetails == null ? null : userDetails.getUser());
     }
 }

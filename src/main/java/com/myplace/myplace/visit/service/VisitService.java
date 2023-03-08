@@ -28,10 +28,13 @@ public class VisitService {
     @Transactional
     public SuccessResponseDto<List<VisitResponseDto>> visitedRestaurants(Member member) {
 
-        List<Visit> visitList = visitRepository.findAllByMember_MemberId(member.getMemberId());
-
-
         List<VisitResponseDto> visitResponseDtoList = new ArrayList<>();
+
+        if (member == null) {
+            return ResponseUtils.ok(visitResponseDtoList, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+        }
+
+        List<Visit> visitList = visitRepository.findAllByMember_MemberId(member.getMemberId());
 
         for(Visit v : visitList) {
 
@@ -39,7 +42,7 @@ public class VisitService {
 
             boolean isReviewed = false;
 
-            if(review.isPresent()) {
+            if(review.get().size() != 0) {
                 isReviewed = true;
             }
 
