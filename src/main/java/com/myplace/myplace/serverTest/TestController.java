@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TestController {
 
-    private final TestService testService;
-
-    @GetMapping("/test")
-    public TestResponseDto test() {
-        return testService.test();
-    }
+//    private final TestService testService;
+//
+//    @GetMapping("/test")
+//    public TestResponseDto test() {
+//        return testService.test();
+//    }
 
 }

@@ -1,5 +1,6 @@
 package com.myplace.myplace.review.dto;
 
+import com.myplace.myplace.review.entity.KeywordType;
 import com.myplace.myplace.review.entity.Review;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,10 +26,11 @@ public class ReviewDetailDto {
     private int reviewCount;
     private LocalDateTime createdDate;
     private Boolean isPushed;
+    private List<KeywordType> keywordType;
 
     @Builder
     private ReviewDetailDto(Long reviewId, String memberName, String profileImgUrl, String restaurantName, String restaurantAddress, String reviewContents,
-                              String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate, Boolean isPushed) {
+                              String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate, Boolean isPushed, List<KeywordType> keywordType) {
 
         this.reviewId = reviewId;
         this.memberName = memberName;
@@ -42,9 +44,10 @@ public class ReviewDetailDto {
         this.reviewCount = reviewCount;
         this.createdDate = createdDate;
         this.isPushed = isPushed;
+        this.keywordType = keywordType;
     }
 
-    public static ReviewDetailDto of(Review review, int likeCount, int reviewCount, List<String> keywordList, Boolean isPushed) {
+    public static ReviewDetailDto of(Review review, int likeCount, int reviewCount, List<String> keywordList, Boolean isPushed, List<KeywordType> keywordType) {
 
         return ReviewDetailDto.builder()
                 .reviewId(review.getId())
@@ -59,6 +62,7 @@ public class ReviewDetailDto {
                 .reviewCount(reviewCount)
                 .createdDate(review.getCreatedAt())
                 .isPushed(isPushed)
+                .keywordType(keywordType)
                 .build();
     }
 }
