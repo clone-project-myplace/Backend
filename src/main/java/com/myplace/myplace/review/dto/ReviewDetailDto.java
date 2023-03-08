@@ -27,6 +27,7 @@ public class ReviewDetailDto {
     private LocalDateTime createdDate;
     private Boolean isPushed;
     private List<KeywordType> keywordType;
+
     @Builder
     private ReviewDetailDto(Long reviewId, String memberName, String profileImgUrl, String restaurantName, String restaurantAddress, String reviewContents,
                               String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate, Boolean isPushed, List<KeywordType> keywordType) {
