@@ -157,7 +157,7 @@ public class ReviewService {
 
 
     @Transactional(readOnly = true)
-    public SuccessResponseDto<FeedPageResponseDto> feedReviews(int pageNo) {
+    public SuccessResponseDto<FeedPageResponseDto> feedReviews(int pageNo, Member member) {
 
         List<Review> reviewList = reviewRepository.findAll();
 
@@ -174,7 +174,9 @@ public class ReviewService {
                 keywordList.add(keyword);
             }
 
-            FeedReviewResponseDto feedReviewResponseDto = FeedReviewResponseDto.of(review, likeCount, reviewCount, keywordList);
+            boolean isPushed = (member != null) && likeRepository.existsByMemberAndReview(member, review);
+
+            FeedReviewResponseDto feedReviewResponseDto = FeedReviewResponseDto.of(review, likeCount, reviewCount, keywordList, isPushed);
 
             feedReviewResponseDtoList.add(feedReviewResponseDto);
         }

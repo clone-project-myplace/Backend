@@ -12,4 +12,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByMemberAndReview(Member member, Review review);
     List<Like> findByReviewId(Long id);
     void deleteAllByReviewId(Long id);
+    Boolean existsByMemberAndReview(Member member, Review review);
 }

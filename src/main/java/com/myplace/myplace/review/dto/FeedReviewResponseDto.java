@@ -23,11 +23,12 @@ public class FeedReviewResponseDto {
     private List<String> keywordList;
     private int reviewCount;
     private LocalDateTime createdDate;
+    private Boolean isPushed;
 
-    //     [피드] 조회
+
     @Builder
     private FeedReviewResponseDto(Long reviewId, String memberName, String restaurantName, String restaurantAddress, String reviewContents,
-                                  String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate) {
+                                  String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate, boolean isPushed) {
 
         this.reviewId = reviewId;
         this.memberName = memberName;
@@ -39,9 +40,10 @@ public class FeedReviewResponseDto {
         this.keywordList = keywordList;
         this.reviewCount = reviewCount;
         this.createdDate = createdDate;
+        this.isPushed = isPushed;
     }
 
-    public static FeedReviewResponseDto of(Review review, int likeCount, int reviewCount, List<String> keywordList){
+    public static FeedReviewResponseDto of(Review review, int likeCount, int reviewCount, List<String> keywordList, boolean isPushed){
 
         return FeedReviewResponseDto.builder()
                 .reviewId(review.getId())
@@ -54,6 +56,7 @@ public class FeedReviewResponseDto {
                 .keywordList(keywordList)
                 .reviewCount(reviewCount)
                 .createdDate(review.getCreatedAt())
+                .isPushed(isPushed)
                 .build();
     }
 
