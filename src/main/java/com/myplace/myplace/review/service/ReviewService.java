@@ -150,6 +150,10 @@ public class ReviewService {
 
         List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
 
+        if (member == null) {
+            return ResponseUtils.ok(reviewResponseDtoList, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+        }
+
         int reviewCount = reviewRepository.findByMemberId(member.getId()).size();
 
         for(Review r : reviewList) {

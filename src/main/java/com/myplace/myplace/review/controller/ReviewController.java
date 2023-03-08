@@ -41,7 +41,7 @@ public class ReviewController {
 
     @GetMapping("/myreviews")
     public SuccessResponseDto<List<ReviewResponseDto>> myreviews(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return reviewService.myreviews(userDetails.getUser());
+        return reviewService.myreviews(userDetails == null ? null : userDetails.getUser());
     }
 
     @GetMapping("/reviews")
