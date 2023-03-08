@@ -146,13 +146,13 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public SuccessResponseDto<List<ReviewResponseDto>> myreviews(Member member) {
 
-        List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
-
         List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
 
         if (member == null) {
             return ResponseUtils.ok(reviewResponseDtoList, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
         }
+
+        List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
 
         int reviewCount = reviewRepository.findByMemberId(member.getId()).size();
 
