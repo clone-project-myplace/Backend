@@ -35,7 +35,7 @@ public class VisitService {
 
         for(Visit v : visitList) {
 
-            Optional<Review> review = reviewRepository.findByMemberAndRestaurant(member, v.getRestaurant());
+            Optional<List<Review>> review = reviewRepository.findByMemberAndRestaurant(member, v.getRestaurant());
 
             boolean isReviewed = false;
 
