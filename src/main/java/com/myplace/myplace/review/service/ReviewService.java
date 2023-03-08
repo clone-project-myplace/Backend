@@ -4,6 +4,7 @@ import com.myplace.myplace.common.ErrorType;
 import com.myplace.myplace.common.MessageType;
 import com.myplace.myplace.common.ResponseUtils;
 import com.myplace.myplace.common.SuccessResponseDto;
+import com.myplace.myplace.like.entity.Like;
 import com.myplace.myplace.like.repository.LikeRepository;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.restaurant.entity.Restaurant;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -112,12 +114,14 @@ public class ReviewService {
 
 
     @Transactional(readOnly = true)
-    public SuccessResponseDto<ReviewDetailDto> reviewDetail(Long id) {
+    public SuccessResponseDto<ReviewDetailDto> reviewDetail(Member member, Long id) {
 
 
         Review review = reviewRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
+
+        boolean isPushed = (member != null) && likeRepository.existsByMemberAndReview(member, review);
 
         List<String> reviewKeywordList = new ArrayList<>();
 
@@ -130,7 +134,7 @@ public class ReviewService {
         int likeCount = likeRepository.findByReviewId(id).size();
         int reviewCount = reviewRepository.findByMemberId(review.getMember().getId()).size();
 
-        ReviewDetailDto reviewDetailDto = ReviewDetailDto.of(review, likeCount, reviewCount, reviewKeywordList);
+        ReviewDetailDto reviewDetailDto = ReviewDetailDto.of(review, likeCount, reviewCount, reviewKeywordList, isPushed);
 
         return ResponseUtils.ok(reviewDetailDto, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
