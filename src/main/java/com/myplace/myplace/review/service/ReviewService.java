@@ -121,7 +121,7 @@ public class ReviewService {
                 () -> new IllegalArgumentException(ErrorType.NOT_FOUND_REVIEW.getMessage())
         );
 
-        boolean isPushed = likeRepository.existsByMemberAndReview(member, review);
+        boolean isPushed = (member != null) && likeRepository.existsByMemberAndReview(member, review);
 
         List<String> reviewKeywordList = new ArrayList<>();
 
