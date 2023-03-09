@@ -87,4 +87,8 @@ public class MemberService {
 
         return ResponseUtils.ok(ProfileResponseDto.from(imgUrl), MessageType.PROFILE_REGISTER_SUCCESSFULLY);
     }
+
+    public SuccessResponseDto<MemberInfoResponseDto> getMemberInfo(Member member) {
+        return ResponseUtils.ok(MemberInfoResponseDto.from(member), MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+    }
 }
