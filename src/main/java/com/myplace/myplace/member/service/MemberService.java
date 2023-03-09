@@ -8,6 +8,7 @@ import com.myplace.myplace.jwt.JwtUtil;
 import com.myplace.myplace.member.dto.*;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.member.repository.MemberRepository;
+import com.myplace.myplace.review.repository.ReviewRepository;
 import com.myplace.myplace.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
 
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
@@ -89,6 +91,9 @@ public class MemberService {
     }
 
     public SuccessResponseDto<MemberInfoResponseDto> getMemberInfo(Member member) {
-        return ResponseUtils.ok(MemberInfoResponseDto.from(member), MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
+
+        int reviewCount = reviewRepository.countByMemberId(member.getId());
+
+        return ResponseUtils.ok(MemberInfoResponseDto.from(member, reviewCount), MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
 }
