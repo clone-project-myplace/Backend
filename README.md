@@ -17,7 +17,7 @@
   - React
 - BE
   - Java
-  - Spring
+  - Spring Boot
   - MySQL
 
 ### 💡 구현기능
@@ -75,3 +75,10 @@
 | 최승호 | 프론트엔드(React) | 로그인<br>회원가입<br>메인 페이지<br>피드, 방문, 리뷰 조회<br>무한스크롤 | https://github.com/ |
 | 한지윤A | 프론트엔드(React) | 리뷰 상세조회<br>리뷰 수정<br>리뷰 삭제<br>좋아요 기능 | https://github.com/JellyKingdom |
 | 김찬희 | 프론트엔드(React) | 리뷰 작성<br>리뷰 수정<br>리뷰 삭제<br>카테고리 체크<br>이미지 업로드 |  |
+
+---
+
+### 📽️ 결과물
+- 시연 영상
+
+  [클론 프로젝트 - 네이버 마이플레이스(My Place)](https://youtu.be/B4itX-rCSgY)
