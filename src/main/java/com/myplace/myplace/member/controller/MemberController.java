@@ -36,4 +36,9 @@ public class MemberController {
                                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return memberService.uploadPhoto(requestDto, userDetails.getUser());
     }
+
+    @GetMapping(value = "/info")
+    public SuccessResponseDto<MemberInfoResponseDto> getMemberInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return memberService.getMemberInfo(userDetails.getUser());
+    }
 }
