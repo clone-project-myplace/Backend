@@ -1,10 +1,7 @@
 package com.myplace.myplace.member.controller;
 
 import com.myplace.myplace.common.SuccessResponseDto;
-import com.myplace.myplace.member.dto.LoginRequestDto;
-import com.myplace.myplace.member.dto.LoginResponseDto;
-import com.myplace.myplace.member.dto.ProfileRequestDto;
-import com.myplace.myplace.member.dto.SignupRequestDto;
+import com.myplace.myplace.member.dto.*;
 import com.myplace.myplace.member.service.MemberService;
 import com.myplace.myplace.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +32,8 @@ public class MemberController {
     }
 
     @PostMapping(value = "/profile")
-    public SuccessResponseDto<Void> uploadProfile(@ModelAttribute ProfileRequestDto requestDto,
-                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public SuccessResponseDto<ProfileResponseDto> uploadProfile(@ModelAttribute ProfileRequestDto requestDto,
+                                                                @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return memberService.uploadPhoto(requestDto, userDetails.getUser());
     }
 }
