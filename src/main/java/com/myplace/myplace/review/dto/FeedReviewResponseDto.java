@@ -15,6 +15,7 @@ public class FeedReviewResponseDto {
 
     private Long reviewId;
     private String memberName;
+    private String profileImgUrl;
     private String restaurantName;
     private String restaurantAddress;
     private String reviewContents;
@@ -27,11 +28,12 @@ public class FeedReviewResponseDto {
 
 
     @Builder
-    private FeedReviewResponseDto(Long reviewId, String memberName, String restaurantName, String restaurantAddress, String reviewContents,
+    private FeedReviewResponseDto(Long reviewId, String memberName, String profileImgUrl, String restaurantName, String restaurantAddress, String reviewContents,
                                   String reviewImgUrl, int likeCount, List<String> keywordList, int reviewCount, LocalDateTime createdDate, boolean isPushed) {
 
         this.reviewId = reviewId;
         this.memberName = memberName;
+        this.profileImgUrl = profileImgUrl;
         this.restaurantName = restaurantName;
         this.restaurantAddress = restaurantAddress;
         this.reviewContents = reviewContents;
@@ -48,6 +50,7 @@ public class FeedReviewResponseDto {
         return FeedReviewResponseDto.builder()
                 .reviewId(review.getId())
                 .memberName(review.getMember().getMemberName())
+                .profileImgUrl(review.getMember().getImgUrl())
                 .restaurantName(review.getRestaurant().getName())
                 .restaurantAddress(review.getRestaurant().getAddress())
                 .reviewContents(review.getContents())
