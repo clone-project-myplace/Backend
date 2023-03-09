@@ -5,10 +5,7 @@ import com.myplace.myplace.common.MessageType;
 import com.myplace.myplace.common.ResponseUtils;
 import com.myplace.myplace.common.SuccessResponseDto;
 import com.myplace.myplace.jwt.JwtUtil;
-import com.myplace.myplace.member.dto.LoginRequestDto;
-import com.myplace.myplace.member.dto.LoginResponseDto;
-import com.myplace.myplace.member.dto.ProfileRequestDto;
-import com.myplace.myplace.member.dto.SignupRequestDto;
+import com.myplace.myplace.member.dto.*;
 import com.myplace.myplace.member.entity.Member;
 import com.myplace.myplace.member.repository.MemberRepository;
 import com.myplace.myplace.s3.service.S3Uploader;
@@ -80,7 +77,7 @@ public class MemberService {
     }
 
     @Transactional
-    public SuccessResponseDto<Void> uploadPhoto(ProfileRequestDto requestDto, Member member) throws IOException {
+    public SuccessResponseDto<ProfileResponseDto> uploadPhoto(ProfileRequestDto requestDto, Member member) throws IOException {
 
         MultipartFile img = requestDto.getImgUrl();
         String imgUrl = s3Uploader.upload(img);
@@ -88,6 +85,6 @@ public class MemberService {
         member.update(imgUrl);
         memberRepository.save(member);
 
-        return ResponseUtils.ok(MessageType.PROFILE_REGISTER_SUCCESSFULLY);
+        return ResponseUtils.ok(ProfileResponseDto.from(imgUrl), MessageType.PROFILE_REGISTER_SUCCESSFULLY);
     }
 }
