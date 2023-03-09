@@ -41,6 +41,7 @@ public class ReviewService {
     private final S3Uploader s3Uploader;
 
     private static final int PAGE_SIZE = 10;
+    private static final String DEFAULT_IMG_URL = "https://myplace-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg";
 
 
     @Transactional
@@ -195,7 +196,10 @@ public class ReviewService {
         Page<FeedReviewResponseDto> reviewPage = getReviewPage(pageNo, feedReviewResponseDtoList);
 
         boolean isLastPage = (pageNo == (reviewPage.getTotalPages() - 1));
-        FeedPageResponseDto pageResponse = FeedPageResponseDto.of(isLastPage, reviewPage.getContent());
+
+        String loginProfileUrl = (member == null) ? DEFAULT_IMG_URL : member.getImgUrl();
+
+        FeedPageResponseDto pageResponse = FeedPageResponseDto.of(isLastPage, loginProfileUrl, reviewPage.getContent());
 
         return ResponseUtils.ok(pageResponse, MessageType.REVIEW_INQUIRY_SUCCESSFULLY);
     }
