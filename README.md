@@ -16,9 +16,13 @@
   - JavaScript
   - React
 - BE
-  - Java
-  - Spring Boot
-  - MySQL
+    - Java
+    - Spring Boot
+    - Spring Data JPA
+    - Spring Security
+    - AWS EC2
+    - AWS RDS
+    - MySQL
 
 ### 💡 구현기능
 
